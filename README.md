@@ -1,6 +1,6 @@
 # MetricMind Agentic Semantic BI Engine
 
-##Overview
+## Overview
 
 MetricMind is an AI-powered Business Intelligence (BI) platform that enables users to interact with enterprise data using natural language. Instead of writing SQL queries manually, users can ask business-related questions, and the system generates accurate insights, charts, and explanations using a semantic layer and AI agents.
 
@@ -21,7 +21,7 @@ MetricMind addresses this challenge by providing a semantic AI layer that unders
 - Deliver explainable AI-generated responses.
 
 ## Proposed Workflow
-
+```text
 User
    │
    ▼
@@ -41,7 +41,7 @@ Query Results
    │
    ▼
 Charts + AI Explanation
-
+```
 
 ## Technology Stack
 
