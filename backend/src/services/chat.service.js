@@ -1,13 +1,11 @@
 const MESSAGES = require("../utils/messages");
 const { successResponse, errorResponse } = require("../utils/response");
 
-const processQuestion = (question) => {
-    if (!question) {
-        return errorResponse(MESSAGES.QUESTION_REQUIRED);
-    }
+const processQuestion = async (question) => {
 
     return successResponse({
-        receivedQuestion: question
+        receivedQuestion: question,
+        aiResponse: "Mock AI response"
     });
 };
 

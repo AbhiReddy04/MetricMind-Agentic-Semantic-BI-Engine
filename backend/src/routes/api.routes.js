@@ -1,4 +1,6 @@
 const express = require("express");
+
+const validateChatRequest = require("../middleware/validateChatRequest");
 const { handleChat } = require("../controllers/chat.controller");
 
 const router = express.Router();
@@ -14,6 +16,6 @@ router.get("/health", (req, res) => {
     });
 });
 
-router.post("/chat", handleChat);
+router.post("/chat", validateChatRequest, handleChat);
 
 module.exports = router;
