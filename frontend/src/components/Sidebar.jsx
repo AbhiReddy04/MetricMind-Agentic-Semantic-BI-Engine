@@ -1,21 +1,17 @@
+import "../styles/Sidebar.css";
+
 function Sidebar() {
   return (
-    <div
-      style={{
-        width: "220px",
-        height: "100vh",
-        backgroundColor: "#111827",
-        color: "white",
-        padding: "20px",
-      }}
-    >
-      <h3>Menu</h3>
+    <div className="sidebar">
+      <h2>📂 Menu</h2>
 
-      <p>🏠 Dashboard</p>
-      <p>📊 Analytics</p>
-      <p>📦 Orders</p>
-      <p>👥 Customers</p>
-      <p>⚙️ Settings</p>
+      <ul>
+        <li>🏠 Dashboard</li>
+        <li>📊 Analytics</li>
+        <li>📦 Orders</li>
+        <li>👥 Customers</li>
+        <li>⚙️ Settings</li>
+      </ul>
     </div>
   );
 }

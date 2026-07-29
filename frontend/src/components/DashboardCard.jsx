@@ -1,14 +1,8 @@
-function DashboardCard({ title, value, color }) {
+import "../styles/DashboardCard.css";
+
+function DashboardCard({ title, value }) {
   return (
-    <div
-      style={{
-        backgroundColor: color,
-        color: "white",
-        padding: "20px",
-        borderRadius: "10px",
-        width: "200px",
-      }}
-    >
+    <div className="card">
       <h2>{value}</h2>
       <p>{title}</p>
     </div>

@@ -2,7 +2,7 @@ import DashboardCard from "../components/DashboardCard";
 
 function Dashboard() {
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "20px", flex: 1 }}>
       <h1>Dashboard</h1>
 
       <div
@@ -10,25 +10,12 @@ function Dashboard() {
           display: "flex",
           gap: "20px",
           marginTop: "20px",
+          flexWrap: "wrap",
         }}
       >
-        <DashboardCard
-          title="Total Sales"
-          value="120"
-          color="#22c55e"
-        />
-
-        <DashboardCard
-          title="Orders"
-          value="45"
-          color="#3b82f6"
-        />
-
-        <DashboardCard
-          title="Revenue"
-          value="₹25,000"
-          color="#f59e0b"
-        />
+        <DashboardCard title="Total Sales" value="120" />
+        <DashboardCard title="Orders" value="45" />
+        <DashboardCard title="Revenue" value="₹25,000" />
       </div>
     </div>
   );

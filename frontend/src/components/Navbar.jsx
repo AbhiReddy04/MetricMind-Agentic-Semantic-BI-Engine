@@ -1,19 +1,12 @@
+import "../styles/Navbar.css";
+
 function Navbar() {
   return (
-    <nav
-      style={{
-        backgroundColor: "#1e293b",
-        color: "white",
-        padding: "15px 25px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <h2>📊 MetricMind</h2>
+    <nav className="navbar">
+      <div className="logo">📊 MetricMind</div>
 
-      <div>
-        <span>Welcome, Abhishek 👋</span>
+      <div className="user">
+        Welcome, Abhishek 👋
       </div>
     </nav>
   );
