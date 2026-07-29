@@ -1,18 +1,7 @@
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
-import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
 
 function App() {
-  return (
-    <>
-      <Navbar />
-
-      <div style={{ display: "flex" }}>
-        <Sidebar />
-        <Dashboard />
-      </div>
-    </>
-  );
+  return <Login />;
 }
 
 export default App;
