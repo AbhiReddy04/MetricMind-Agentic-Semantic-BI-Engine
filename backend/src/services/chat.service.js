@@ -1,11 +1,13 @@
-const MESSAGES = require("../utils/messages");
-const { successResponse, errorResponse } = require("../utils/response");
+const { getAIResponse } = require("./ai.service");
+
+const { successResponse } = require("../utils/response");
 
 const processQuestion = async (question) => {
+    const aiResponse = await getAIResponse(question);
 
     return successResponse({
         receivedQuestion: question,
-        aiResponse: "Mock AI response"
+        aiResponse
     });
 };
 
