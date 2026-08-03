@@ -29,7 +29,7 @@ function Navbar() {
       {/* Logo */}
       <div className="logo">
         <span className="logo-icon">📊</span>
-        <h2>MetricMind</h2>
+        <h2>Metric Mind</h2>
       </div>
 
       {/* Right Section */}
