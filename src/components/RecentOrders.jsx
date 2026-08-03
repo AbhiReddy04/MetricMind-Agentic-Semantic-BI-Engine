@@ -7,63 +7,33 @@ function RecentOrders() {
   ];
 
   return (
-    <div
-      style={{
-        marginTop: "30px",
-        background: "#fff",
-        padding: "20px",
-        borderRadius: "10px",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-      }}
-    >
-      <h2
-        style={{
-          color: "#333",
-          marginBottom: "20px",
-        }}
-      >
-        Recent Orders
-      </h2>
+    <div className="recent-orders">
+      <h2>Recent Orders</h2>
 
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          color: "#333",
-        }}
-      >
+      <table className="orders-table">
         <thead>
-          <tr style={{ background: "#2563eb", color: "#fff" }}>
-            <th style={{ padding: "12px" }}>Order ID</th>
-            <th style={{ padding: "12px" }}>Customer</th>
-            <th style={{ padding: "12px" }}>Amount</th>
-            <th style={{ padding: "12px" }}>Status</th>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Status</th>
           </tr>
         </thead>
 
         <tbody>
           {orders.map((order) => (
-            <tr
-              key={order.id}
-              style={{
-                borderBottom: "1px solid #ddd",
-                textAlign: "center",
-              }}
-            >
-              <td style={{ padding: "12px" }}>{order.id}</td>
-              <td style={{ padding: "12px" }}>{order.customer}</td>
-              <td style={{ padding: "12px" }}>{order.amount}</td>
+            <tr key={order.id}>
+              <td>{order.id}</td>
+              <td>{order.customer}</td>
+              <td>{order.amount}</td>
               <td
-                style={{
-                  padding: "12px",
-                  color:
-                    order.status === "Completed"
-                      ? "green"
-                      : order.status === "Pending"
-                      ? "orange"
-                      : "blue",
-                  fontWeight: "bold",
-                }}
+                className={
+                  order.status === "Completed"
+                    ? "completed"
+                    : order.status === "Pending"
+                    ? "pending"
+                    : "processing"
+                }
               >
                 {order.status}
               </td>

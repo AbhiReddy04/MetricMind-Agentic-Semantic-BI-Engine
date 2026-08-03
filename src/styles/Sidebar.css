@@ -24,18 +24,16 @@
   margin: 0;
 }
 
-.sidebar-menu li {
+.sidebar-menu li a {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 16px 18px;
-  margin-bottom: 12px;
+  gap: 18px;   /* 15px nundi 18px ki pencham */
+  width: 100%;
+  padding: 15px 18px;
+  color: #ffffff;
+  text-decoration: none;
   border-radius: 12px;
-  color: #f9fafb;
-  cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 17px;
-  font-weight: 500;
 }
 
 .sidebar-menu li:hover {
@@ -49,12 +47,14 @@
 }
 
 .menu-icon {
-  font-size: 20px;
-  min-width: 20px;
+  font-size: 22px;
+  min-width: 26px;   /* Icon ki fixed width */
 }
 
 .sidebar-menu li span {
-  flex: 1;
+  margin-left: 2px;
+  font-size: 17px;
+  font-weight: 500;
 }
 
 .logout {
@@ -63,12 +63,16 @@
   align-items: center;
   gap: 15px;
   padding: 16px 18px;
-  color: #ef4444;
-  font-size: 17px;
-  font-weight: 600;
   border-radius: 12px;
+  color: #ef4444;
   cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
   transition: all 0.3s ease;
+}
+
+.logout:hover {
+  background: rgba(239, 68, 68, 0.1);
 }
 
 .logout:hover {

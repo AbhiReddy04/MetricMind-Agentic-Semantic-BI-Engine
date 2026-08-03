@@ -1,3 +1,4 @@
+import { useNavigate, NavLink } from "react-router-dom";
 import {
   FaChartPie,
   FaChartLine,
@@ -10,38 +11,70 @@ import {
 import "../styles/Sidebar.css";
 
 function Sidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate("/");
+  };
+
   return (
     <aside className="sidebar">
       <h3 className="sidebar-title">MAIN MENU</h3>
 
       <ul className="sidebar-menu">
-        <li className="active">
-          <FaChartPie className="menu-icon" />
-          <span>Dashboard</span>
+        <li>
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <FaChartPie className="menu-icon" />
+            <span>Dashboard</span>
+          </NavLink>
         </li>
 
         <li>
-          <FaChartLine className="menu-icon" />
-          <span>Analytics</span>
+          <NavLink
+            to="/analytics"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <FaChartLine className="menu-icon" />
+            <span>Analytics</span>
+          </NavLink>
         </li>
 
         <li>
-          <FaRobot className="menu-icon" />
-          <span>AI Chat</span>
+          <NavLink
+            to="/chat"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <FaRobot className="menu-icon" />
+            <span>AI Chat</span>
+          </NavLink>
         </li>
 
         <li>
-          <FaFileAlt className="menu-icon" />
-          <span>Reports</span>
+          <NavLink
+            to="/reports"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <FaFileAlt className="menu-icon" />
+            <span>Reports</span>
+          </NavLink>
         </li>
 
         <li>
-          <FaCog className="menu-icon" />
-          <span>Settings</span>
+          <NavLink
+            to="/settings"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <FaCog className="menu-icon" />
+            <span>Settings</span>
+          </NavLink>
         </li>
       </ul>
 
-      <div className="logout">
+      {/* Logout */}
+      <div className="logout" onClick={handleLogout}>
         <FaSignOutAlt className="menu-icon" />
         <span>Logout</span>
       </div>

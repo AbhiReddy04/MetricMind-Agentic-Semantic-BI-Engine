@@ -38,38 +38,66 @@ function SalesPieChart() {
         Sales by Category
       </h2>
 
-      <ResponsiveContainer width="100%" height="85%">
+      <ResponsiveContainer width="100%" height="80%">
         <PieChart>
           <Pie
             data={data}
             dataKey="value"
             nameKey="name"
             cx="50%"
-            cy="45%"
-            innerRadius={60}
-            outerRadius={100}
+            cy="50%"
+            innerRadius={65}
+            outerRadius={90}
             paddingAngle={4}
-            label={({ percent }) =>
-              `${(percent * 100).toFixed(0)}%`
-            }
+            labelLine={false}
             animationDuration={1000}
+            label={({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+              const RADIAN = Math.PI / 180;
+
+              // Label donut ring center lo untundi
+              const radius =
+                innerRadius + (outerRadius - innerRadius) * 0.40;
+
+              const x =
+                cx + radius * Math.cos(-midAngle * RADIAN);
+
+              const y =
+                cy + radius * Math.sin(-midAngle * RADIAN);
+
+              return (
+                <text
+                  x={x}
+                  y={y}
+                  fill="#ffffff"
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fontSize={18}
+                  fontWeight="700"
+                >
+                  {`${Math.round(percent * 100)}%`}
+                </text>
+              );
+            }}
           >
             {data.map((entry, index) => (
               <Cell
                 key={index}
-                fill={COLORS[index % COLORS.length]}
+                fill={COLORS[index]}
               />
             ))}
           </Pie>
 
-          <Tooltip />
+          <Tooltip
+            formatter={(value, name) => [`${value}%`, name]}
+          />
 
           <Legend
             verticalAlign="bottom"
+            align="center"
             iconType="circle"
             wrapperStyle={{
-              fontSize: "14px",
-              paddingTop: "10px",
+              fontSize: "16px",
+              paddingTop: "15px",
             }}
           />
         </PieChart>

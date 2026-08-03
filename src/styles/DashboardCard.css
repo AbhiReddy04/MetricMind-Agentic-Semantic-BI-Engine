@@ -46,3 +46,28 @@
   font-size: 16px;
   margin: 0;
 }
+/* ========================= */
+/* DARK MODE - DASHBOARD CARD */
+/* ========================= */
+
+body.dark-theme .dashboard-card {
+  background: #1f2937;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-theme .dashboard-card h2 {
+  color: #ffffff;
+}
+
+body.dark-theme .dashboard-card p {
+  color: #d1d5db;
+}
+
+body.dark-theme .card-icon {
+  background: #2563eb;
+  color: white;
+}
+
+body.dark-theme .growth {
+  color: #22c55e;
+}
