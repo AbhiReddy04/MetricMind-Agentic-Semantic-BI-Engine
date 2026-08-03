@@ -1,77 +1,16 @@
-# MetricMind Agentic Semantic BI Engine
+# React + Vite
 
-## Overview
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-MetricMind is an AI-powered Business Intelligence (BI) platform that enables users to interact with enterprise data using natural language. Instead of writing SQL queries manually, users can ask business-related questions, and the system generates accurate insights, charts, and explanations using a semantic layer and AI agents.
+Currently, two official plugins are available:
 
-The project aims to improve data accessibility, maintain business metric consistency, and provide intelligent analytical reports through a conversational interface.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Problem Statement
+## React Compiler
 
-Business users often struggle to retrieve meaningful insights from large datasets because they require SQL knowledge and understanding of complex database schemas.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-MetricMind addresses this challenge by providing a semantic AI layer that understands business metrics and converts natural language queries into accurate analytical responses.
+## Expanding the Oxlint configuration
 
-## Objectives
-
-- Build an AI-powered conversational Business Intelligence platform.
-- Convert natural language questions into analytical queries.
-- Ensure metric consistency using a semantic layer.
-- Generate visualizations for business insights.
-- Deliver explainable AI-generated responses.
-
-## Proposed Workflow
-```text
-User
-   │
-   ▼
-Next.js Chat Interface
-   │
-   ▼
-LangChain Agent
-   │
-   ▼
-Semantic Layer (Cube.dev / dbt)
-   │
-   ▼
-Snowflake Data Warehouse
-   │
-   ▼
-Query Results
-   │
-   ▼
-Charts + AI Explanation
-```
-
-## Technology Stack
-
-### Frontend
-- Next.js
-- React
-- Tailwind CSS
-
-### Backend
-- Python
-- LangChain
-
-### AI Model
-- Llama 3
-
-### Semantic Layer
-- Cube.dev
-- dbt
-
-### Database
-- Snowflake
-
-### Visualization
-- Apache ECharts
-
-### Version Control
-- Git
-- GitHub
-
-
-## Development Status
-
-🚧 Project initialization phase.
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
