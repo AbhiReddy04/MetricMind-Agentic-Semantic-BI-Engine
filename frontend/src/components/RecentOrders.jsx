@@ -1,10 +1,23 @@
-function RecentOrders() {
-  const orders = [
-    { id: 101, customer: "Rahul", amount: "₹2,500", status: "Completed" },
-    { id: 102, customer: "Priya", amount: "₹1,800", status: "Pending" },
-    { id: 103, customer: "Kiran", amount: "₹3,200", status: "Completed" },
-    { id: 104, customer: "Anjali", amount: "₹950", status: "Processing" },
-  ];
+function RecentOrders({ data = [] }) {
+  const getStatusText = (status) => {
+    if (status === "delivered") return "Completed";
+    if (status === "canceled" || status === "cancelled") {
+      return "Cancelled";
+    }
+
+    return status
+      ? status.charAt(0).toUpperCase() + status.slice(1)
+      : "Unknown";
+  };
+
+  const getStatusClass = (status) => {
+    if (status === "delivered") return "completed";
+    if (status === "canceled" || status === "cancelled") {
+      return "pending";
+    }
+
+    return "processing";
+  };
 
   return (
     <div className="recent-orders">
@@ -21,21 +34,21 @@ function RecentOrders() {
         </thead>
 
         <tbody>
-          {orders.map((order) => (
-            <tr key={order.id}>
+          {data.map((order, index) => (
+            <tr key={order.id || index}>
               <td>{order.id}</td>
+
               <td>{order.customer}</td>
-              <td>{order.amount}</td>
-              <td
-                className={
-                  order.status === "Completed"
-                    ? "completed"
-                    : order.status === "Pending"
-                    ? "pending"
-                    : "processing"
-                }
-              >
-                {order.status}
+
+              <td>
+                ₹
+                {Number(order.amount || 0).toLocaleString("en-IN", {
+                  maximumFractionDigits: 2,
+                })}
+              </td>
+
+              <td className={getStatusClass(order.status)}>
+                {getStatusText(order.status)}
               </td>
             </tr>
           ))}

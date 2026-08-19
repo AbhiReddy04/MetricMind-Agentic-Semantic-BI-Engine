@@ -9,12 +9,16 @@ import Analytics from "./pages/Analytics";
 import Chat from "./pages/Chat";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
+import Register from "./pages/Register";
 
 function App() {
   return (
     <Routes>
       {/* Login */}
       <Route path="/" element={<Login />} />
+
+      {/* Register */}
+      <Route path="/register" element={<Register />} />
 
       {/* Dashboard */}
       <Route path="/dashboard" element={<Dashboard />} />
@@ -30,8 +34,14 @@ function App() {
 
       {/* Settings */}
       <Route path="/settings" element={<Settings />} />
+
+      {/* Notifications */}
       <Route path="/notifications" element={<Notifications />} />
+
+      {/* Profile */}
       <Route path="/profile" element={<Profile />} />
+
+      {/* Customer Report */}
       <Route path="/customer-report" element={<CustomerReport />} />
     </Routes>
   );

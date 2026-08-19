@@ -8,16 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { month: "Jan", sales: 4000 },
-  { month: "Feb", sales: 3000 },
-  { month: "Mar", sales: 5000 },
-  { month: "Apr", sales: 4500 },
-  { month: "May", sales: 6000 },
-  { month: "Jun", sales: 7000 },
-];
-
-function Chart() {
+function Chart({ data = [] }) {
   return (
     <div
       style={{
@@ -33,9 +24,19 @@ function Chart() {
       <ResponsiveContainer width="100%" height="90%">
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
+
           <XAxis dataKey="month" />
+
           <YAxis />
-          <Tooltip />
+
+          <Tooltip
+            formatter={(value) =>
+              `₹${Number(value).toLocaleString("en-IN", {
+                maximumFractionDigits: 2,
+              })}`
+            }
+          />
+
           <Line
             type="monotone"
             dataKey="sales"
