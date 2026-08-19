@@ -8,13 +8,16 @@ const handleChat = async (req, res) => {
 
         res.json(response);
     } catch (error) {
+        console.error("CHAT ERROR:", error);
+
         res.status(500).json({
             success: false,
-            message: "Internal Server Error"
+            message: "Chat failed",
+            error: error.message,
         });
     }
 };
 
 module.exports = {
-    handleChat
+    handleChat,
 };

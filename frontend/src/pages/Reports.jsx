@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import "../styles/Reports.css";
@@ -10,36 +12,161 @@ import { useNavigate } from "react-router-dom";
 function Reports() {
   const navigate = useNavigate();
 
-  const reportData = [
-    ["Sales Report", "30 Jul 2026", "Completed"],
-    ["Revenue Report", "29 Jul 2026", "Completed"],
-    ["Customer Report", "28 Jul 2026", "Pending"],
-    ["Inventory Report", "27 Jul 2026", "Processing"],
-  ];
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // Load real data from backend
+  useEffect(() => {
+    const fetchReportData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/dashboard"
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error("Failed to load report data");
+        }
+
+        setDashboardData(result.data);
+
+        console.log("REPORT DATA:", result.data);
+      } catch (error) {
+        console.error("Reports API Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReportData();
+  }, []);
+
+  // -----------------------------
+  // PDF REPORT
+  // -----------------------------
   const downloadPDF = () => {
+    if (!dashboardData) return;
+
     const doc = new jsPDF();
 
     doc.setFontSize(18);
-    doc.text("Business Reports", 14, 20);
+    doc.text("Business Sales Report", 14, 20);
+
+    doc.setFontSize(11);
+    doc.text(
+      `Customers: ${dashboardData.customers.toLocaleString("en-IN")}`,
+      14,
+      30
+    );
+
+    doc.text(
+      `Orders: ${dashboardData.orders.toLocaleString("en-IN")}`,
+      14,
+      37
+    );
+
+    doc.text(
+      `Products: ${dashboardData.products.toLocaleString("en-IN")}`,
+      14,
+      44
+    );
+
+    doc.text(
+      `Revenue: ₹${Number(dashboardData.revenue).toLocaleString("en-IN", {
+        maximumFractionDigits: 2,
+      })}`,
+      14,
+      51
+    );
+
+    const monthlySales = dashboardData.monthlySales || [];
 
     autoTable(doc, {
-      startY: 30,
-      head: [["Report", "Date", "Status"]],
-      body: reportData,
+      startY: 60,
+      head: [["Month", "Sales"]],
+      body: monthlySales.map((item) => [
+        item.month,
+        `₹${Number(item.sales).toLocaleString("en-IN", {
+          maximumFractionDigits: 2,
+        })}`,
+      ]),
     });
 
-    doc.save("Business_Report.pdf");
+    doc.save("Business_Sales_Report.pdf");
   };
 
+  // -----------------------------
+  // EXCEL REPORT
+  // -----------------------------
   const exportExcel = () => {
-    const worksheet = XLSX.utils.aoa_to_sheet([
-      ["Report", "Date", "Status"],
-      ...reportData,
-    ]);
+    if (!dashboardData) return;
+
+    const summaryData = [
+      ["Metric", "Value"],
+      [
+        "Customers",
+        dashboardData.customers,
+      ],
+      [
+        "Orders",
+        dashboardData.orders,
+      ],
+      [
+        "Products",
+        dashboardData.products,
+      ],
+      [
+        "Revenue",
+        dashboardData.revenue,
+      ],
+    ];
+
+    const monthlySalesData = [
+      ["Month", "Sales"],
+      ...(dashboardData.monthlySales || []).map((item) => [
+        item.month,
+        item.sales,
+      ]),
+    ];
+
+    const categoryData = [
+      ["Category", "Sales"],
+      ...(dashboardData.salesByCategory || []).map((item) => [
+        item.name,
+        item.value,
+      ]),
+    ];
 
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Reports");
+
+    // Summary sheet
+    const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+    XLSX.utils.book_append_sheet(
+      workbook,
+      summarySheet,
+      "Summary"
+    );
+
+    // Monthly sales sheet
+    const monthlySheet = XLSX.utils.aoa_to_sheet(
+      monthlySalesData
+    );
+    XLSX.utils.book_append_sheet(
+      workbook,
+      monthlySheet,
+      "Monthly Sales"
+    );
+
+    // Category sales sheet
+    const categorySheet = XLSX.utils.aoa_to_sheet(
+      categoryData
+    );
+    XLSX.utils.book_append_sheet(
+      workbook,
+      categorySheet,
+      "Sales by Category"
+    );
 
     const excelBuffer = XLSX.write(workbook, {
       bookType: "xlsx",
@@ -57,6 +184,54 @@ function Reports() {
     navigate("/customer-report");
   };
 
+  // -----------------------------
+  // LOADING
+  // -----------------------------
+  if (loading) {
+    return (
+      <div className="dashboard">
+        <Navbar />
+
+        <div className="main-content">
+          <Sidebar />
+
+          <div className="content">
+            <div className="reports-container">
+              <div className="reports-header">
+                <h1>📄 Reports</h1>
+                <p>Loading real business data...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // -----------------------------
+  // ERROR
+  // -----------------------------
+  if (!dashboardData) {
+    return (
+      <div className="dashboard">
+        <Navbar />
+
+        <div className="main-content">
+          <Sidebar />
+
+          <div className="content">
+            <div className="reports-container">
+              <div className="reports-header">
+                <h1>📄 Reports</h1>
+                <p>Failed to load report data.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard">
       <Navbar />
@@ -70,31 +245,68 @@ function Reports() {
             {/* Header */}
             <div className="reports-header">
               <h1>📄 Reports</h1>
-              <p>Download and manage your business reports.</p>
+              <p>
+                Reports generated from your actual business data.
+              </p>
             </div>
 
             {/* Report Cards */}
             <div className="report-cards">
 
+              {/* Sales Report */}
               <div className="report-card">
                 <h2>Sales Report</h2>
-                <p>Monthly sales performance report.</p>
+
+                <p>
+                  Total orders:{" "}
+                  <strong>
+                    {dashboardData.orders.toLocaleString("en-IN")}
+                  </strong>
+                </p>
+
+                <p>
+                  Monthly sales data available
+                </p>
+
                 <button onClick={downloadPDF}>
                   📥 Download PDF
                 </button>
               </div>
 
+              {/* Revenue Report */}
               <div className="report-card">
                 <h2>Revenue Report</h2>
-                <p>Revenue summary and growth analysis.</p>
+
+                <p>
+                  Total Revenue:
+                </p>
+
+                <h3>
+                  ₹
+                  {Number(
+                    dashboardData.revenue
+                  ).toLocaleString("en-IN", {
+                    maximumFractionDigits: 2,
+                  })}
+                </h3>
+
                 <button onClick={exportExcel}>
                   📊 Export Excel
                 </button>
               </div>
 
+              {/* Customer Report */}
               <div className="report-card">
                 <h2>Customer Report</h2>
-                <p>Customer activity and engagement.</p>
+
+                <p>
+                  Total Customers:
+                </p>
+
+                <h3>
+                  {dashboardData.customers.toLocaleString("en-IN")}
+                </h3>
+
                 <button onClick={viewCustomerReport}>
                   👁 View Report
                 </button>
@@ -102,15 +314,15 @@ function Reports() {
 
             </div>
 
-            {/* Recent Reports */}
+            {/* Real Data Summary */}
             <div className="recent-reports">
-              <h2>Recent Reports</h2>
+              <h2>Report Data Summary</h2>
 
               <table>
                 <thead>
                   <tr>
                     <th>Report</th>
-                    <th>Date</th>
+                    <th>Actual Data</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -119,47 +331,59 @@ function Reports() {
 
                   <tr>
                     <td>Sales Report</td>
-                    <td>30 Jul 2026</td>
+                    <td>
+                      {dashboardData.orders.toLocaleString("en-IN")} Orders
+                    </td>
                     <td>
                       <span className="status-completed">
-                        ✅ Completed
+                        ✅ Available
                       </span>
                     </td>
                   </tr>
 
                   <tr>
                     <td>Revenue Report</td>
-                    <td>29 Jul 2026</td>
+                    <td>
+                      ₹
+                      {Number(
+                        dashboardData.revenue
+                      ).toLocaleString("en-IN", {
+                        maximumFractionDigits: 2,
+                      })}
+                    </td>
                     <td>
                       <span className="status-completed">
-                        ✅ Completed
+                        ✅ Available
                       </span>
                     </td>
                   </tr>
 
                   <tr>
                     <td>Customer Report</td>
-                    <td>28 Jul 2026</td>
                     <td>
-                      <span className="status-pending">
-                        ⏳ Pending
+                      {dashboardData.customers.toLocaleString("en-IN")} Customers
+                    </td>
+                    <td>
+                      <span className="status-completed">
+                        ✅ Available
                       </span>
                     </td>
                   </tr>
 
                   <tr>
-                    <td>Inventory Report</td>
-                    <td>27 Jul 2026</td>
+                    <td>Product Report</td>
                     <td>
-                      <span className="status-processing">
-                        🔄 Processing
+                      {dashboardData.products.toLocaleString("en-IN")} Products
+                    </td>
+                    <td>
+                      <span className="status-completed">
+                        ✅ Available
                       </span>
                     </td>
                   </tr>
 
                 </tbody>
               </table>
-
             </div>
 
           </div>
