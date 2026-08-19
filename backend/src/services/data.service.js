@@ -278,47 +278,23 @@ const getRecentOrders = async () => {
             date: order.order_purchase_timestamp,
         }));
 };
-
 // ==========================================
 // RECENT CUSTOMERS
 // ==========================================
 
-// ==========================================
-// RECENT ORDERS
-// ==========================================
+const getRecentCustomers = async () => {
+    const customers = getCustomers();
 
-const getRecentOrders = async () => {
-    const orders = getOrders();
-    const payments = getPayments();
-
-    const paymentByOrder = {};
-
-    payments.forEach((payment) => {
-        const orderId = payment.order_id;
-        const value = Number(payment.payment_value) || 0;
-
-        paymentByOrder[orderId] =
-            (paymentByOrder[orderId] || 0) + value;
-    });
-
-    return orders
-        .filter((order) => order.order_id)
-        .sort(
-            (a, b) =>
-                new Date(b.order_purchase_timestamp) -
-                new Date(a.order_purchase_timestamp)
-        )
-        .slice(0, 10)
-        .map((order) => ({
-            id: order.order_id,
-            customer: order.customer_id,
-            amount: Number(
-                (paymentByOrder[order.order_id] || 0).toFixed(2)
-            ),
-            status: order.order_status,
-            date: order.order_purchase_timestamp,
+    return customers
+        .slice(-5)
+        .reverse()
+        .map((customer) => ({
+            name: customer.customer_id || "Unknown",
+            city: customer.customer_city || "Unknown",
+            state: customer.customer_state || "",
         }));
 };
+
 
 // ==========================================
 // TOP 5 PRODUCTS BY SALES
@@ -406,6 +382,5 @@ module.exports = {
     getSalesByCategory,
     getRecentOrders,
     getRecentCustomers,
-
     getTopProductsBySales,
 };

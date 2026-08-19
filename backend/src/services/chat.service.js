@@ -6,12 +6,25 @@ const {
     getTotalSalesRevenue,
 } = require("./data.service");
 
-const { successResponse } = require("../utils/response");
+// ==========================================
+// PROCESS AI CHAT QUESTION
+// ==========================================
 
 const processQuestion = async (question) => {
-    const lowerQuestion = question.toLowerCase();
+    // Validate question
+    if (!question || typeof question !== "string") {
+        return {
+            success: false,
+            message: "Question is required",
+        };
+    }
 
-    // Customer count
+    const lowerQuestion = question.toLowerCase().trim();
+
+    // ==========================================
+    // CUSTOMER COUNT
+    // ==========================================
+
     if (
         lowerQuestion.includes("how many customers") ||
         lowerQuestion.includes("customer count") ||
@@ -19,13 +32,19 @@ const processQuestion = async (question) => {
     ) {
         const count = await getCustomerCount();
 
-        return successResponse({
-            receivedQuestion: question,
-            aiResponse: `There are ${count} customers in the dataset.`,
-        });
+        return {
+            success: true,
+            data: {
+                receivedQuestion: question,
+                aiResponse: `There are ${count} customers in the dataset.`,
+            },
+        };
     }
 
-    // Total sales revenue
+    // ==========================================
+    // TOTAL SALES REVENUE
+    // ==========================================
+
     if (
         lowerQuestion.includes("total sales revenue") ||
         lowerQuestion.includes("total revenue") ||
@@ -33,13 +52,21 @@ const processQuestion = async (question) => {
     ) {
         const totalRevenue = await getTotalSalesRevenue();
 
-        return successResponse({
-            receivedQuestion: question,
-            aiResponse: `The total sales revenue is ₹${totalRevenue.toFixed(2)}.`,
-        });
+        return {
+            success: true,
+            data: {
+                receivedQuestion: question,
+                aiResponse: `The total sales revenue is ₹${Number(
+                    totalRevenue
+                ).toFixed(2)}.`,
+            },
+        };
     }
 
-    // Top 5 products by sales
+    // ==========================================
+    // TOP 5 PRODUCTS
+    // ==========================================
+
     if (
         lowerQuestion.includes("top 5 products") ||
         lowerQuestion.includes("top five products") ||
@@ -50,24 +77,40 @@ const processQuestion = async (question) => {
         const formattedProducts = products
             .map(
                 (product, index) =>
-                    `${index + 1}. ${product.productId} - ${product.category} - ₹${product.totalSales.toFixed(2)}`
+                    `${index + 1}. ${product.productId} - ${
+                        product.category
+                    } - ₹${Number(product.totalSales).toFixed(2)}`
             )
             .join("\n");
 
-        return successResponse({
-            receivedQuestion: question,
-            aiResponse: `Top 5 products by sales:\n\n${formattedProducts}`,
-        });
+        return {
+            success: true,
+            data: {
+                receivedQuestion: question,
+                aiResponse:
+                    `Top 5 products by sales:\n\n${formattedProducts}`,
+            },
+        };
     }
 
-    // Other questions → Gemini
+    // ==========================================
+    // OTHER QUESTIONS → GEMINI AI
+    // ==========================================
+
     const aiResponse = await getAIResponse(question);
 
-    return successResponse({
-        receivedQuestion: question,
-        aiResponse,
-    });
+    return {
+        success: true,
+        data: {
+            receivedQuestion: question,
+            aiResponse,
+        },
+    };
 };
+
+// ==========================================
+// EXPORT
+// ==========================================
 
 module.exports = {
     processQuestion,
