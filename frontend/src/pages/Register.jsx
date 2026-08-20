@@ -18,7 +18,7 @@ function Register() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/register",
+        "https://metricmind-agentic-semantic-bi-engine.onrender.com/api/register",
         {
           method: "POST",
           headers: {

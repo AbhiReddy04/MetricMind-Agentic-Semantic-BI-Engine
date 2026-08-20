@@ -45,7 +45,7 @@ function Chat() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/chat",
+        "https://metricmind-agentic-semantic-bi-engine.onrender.com/api/chat",
         {
           method: "POST",
           headers: {
