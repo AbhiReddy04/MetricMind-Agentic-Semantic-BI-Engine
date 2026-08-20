@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import "../styles/chat.css";
+import "../styles/Chat.css";
 
 function Chat() {
   const [messages, setMessages] = useState([
