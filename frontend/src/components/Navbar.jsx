@@ -71,7 +71,7 @@ function Navbar() {
           <FaUserCircle className="profile-icon" />
 
           <div className="user-info">
-            <h4>Abhishek</h4>
+            <h4>TEAM</h4>
             <p>Frontend Developer</p>
           </div>
         </div>
