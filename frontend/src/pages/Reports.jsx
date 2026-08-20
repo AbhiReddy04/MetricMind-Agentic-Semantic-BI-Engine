@@ -20,7 +20,7 @@ function Reports() {
     const fetchReportData = async () => {
       try {
         const response = await fetch(
-          "https://metricmind-agentic-semantic-bi-engine.onrender.com/api/dashboard"
+          "http://localhost:5000/api/dashboard"
         );
 
         const result = await response.json();
